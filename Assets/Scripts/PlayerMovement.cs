@@ -43,6 +43,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
 
+    public Animator animator;
+
 
     private bool isGrounded() //Creates an invisible circle of r = 0.2 that returns true if it intersects with a groundLayer
     {
@@ -80,6 +82,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Update() //Executes every frame
     {
+        animator.SetFloat("Speed", Mathf.Abs(horizontal));
+
         if (isDashing)
         {
             return;
@@ -185,8 +189,10 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator JumpCooldown()
     {
         isJumping = true;
+        animator.SetBool("Jumping", true);
         yield return new WaitForSeconds(0.4f);
         isJumping = false;
+        animator.SetBool("Jumping", false);
     }
 
     private IEnumerator Dash()
