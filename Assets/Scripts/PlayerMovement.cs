@@ -35,13 +35,21 @@ public class PlayerMovement : MonoBehaviour
     public float wallJumpDuration = 0.4f;
     public Vector2 wallJumpPower = new Vector2(8.0f, 16.0f);
 
+    [Header("Shooting")]
+    public int maxAmmo = 3;
+    public int currentAmmo;
+    private float cooldownTimer = Mathf.Infinity;
+    [SerializeField] private float shootingCooldown;
 
+    [Header("Everything Else")]
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer; //Allows use of layers in Unity Editor
     [SerializeField] private TrailRenderer tr;
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private Transform firePoint;
+    [SerializeField] private GameObject[] projectiles;
 
     public Animator animator;
 
@@ -78,6 +86,11 @@ public class PlayerMovement : MonoBehaviour
             localscale.x *= -1f; //Multiplies the x component of the localscale by -1 to flip
             transform.localScale = localscale;
         }
+    }
+
+    private void Start()
+    {
+        currentAmmo = 0;
     }
 
     void Update() //Executes every frame
@@ -142,6 +155,13 @@ public class PlayerMovement : MonoBehaviour
         {
             transform.Translate(0f, 0f, 0f);
         }
+
+        if (Input.GetMouseButtonDown(0) && cooldownTimer > shootingCooldown && CanShoot())
+        {
+            Shoot();
+        }
+
+        cooldownTimer += Time.deltaTime;
     }
 
     void FixedUpdate() //Executed at a specific rate which can be changed in the Editor
@@ -216,4 +236,41 @@ public class PlayerMovement : MonoBehaviour
         isWallJumping = false;
     }
 
+    private bool CanShoot()
+    {
+        return isGrounded() && !isWalled() && !isDashing;
+    }    
+
+    private void Shoot()
+    {
+        if (currentAmmo > 0)
+        {
+            animator.SetTrigger("Attack");
+            cooldownTimer = 0;
+
+            projectiles[FindProjectile()].transform.position = firePoint.position;
+            projectiles[FindProjectile()].GetComponent<Projectile>().SetDirection(Mathf.Sign(transform.localScale.x));
+        }
+    }
+
+    private int FindProjectile()
+    {
+        for (int i = 0; i < projectiles.Length; i++)
+        {
+            if (!projectiles[i].activeInHierarchy)
+            {
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
+    public void AddAmmo()
+    {
+        if (currentAmmo < maxAmmo)
+        {
+            currentAmmo++;
+        }
+    }
 }

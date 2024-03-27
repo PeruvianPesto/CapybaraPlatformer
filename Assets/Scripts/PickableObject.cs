@@ -8,6 +8,7 @@ public class PickableObject : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI pickUpText;
     private bool isPickable;
+    private PlayerMovement playerController;
 
 
     private void Start()
@@ -29,6 +30,7 @@ public class PickableObject : MonoBehaviour
         {
             pickUpText.gameObject.SetActive(true);
             isPickable = true;
+            playerController = collision.GetComponent<PlayerMovement>();
         }
     }
 
@@ -38,11 +40,13 @@ public class PickableObject : MonoBehaviour
         {
             pickUpText.gameObject.SetActive(false);
             isPickable = false;
+            playerController = null;
         }
     }
 
     private void PickUp()
     {
+        playerController.AddAmmo();
         Destroy(this.gameObject);
     }
 }
