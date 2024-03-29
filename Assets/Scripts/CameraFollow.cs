@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    private Vector3 offset = new Vector3(0, 0, -12f);
+    private Vector3 offset = new Vector3(0, 0, -15f);
     private float smoothTime = 0.25f; //Smoothness of the Camera Follow (Time for Camera to reach Target Position)
     private Vector3 velocity = Vector3.zero;
 
