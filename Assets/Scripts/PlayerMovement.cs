@@ -38,8 +38,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Shooting")]
     public int maxAmmo = 3;
     public int currentAmmo;
-    private float cooldownTimer = Mathf.Infinity;
-    [SerializeField] private float shootingCooldown;
+    public Projectile Projectile;
 
     [Header("Everything Else")]
     [SerializeField] private Rigidbody2D rb;
@@ -49,7 +48,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private Transform firePoint;
-    [SerializeField] private GameObject[] projectiles;
 
     public Animator animator;
 
@@ -156,12 +154,11 @@ public class PlayerMovement : MonoBehaviour
             transform.Translate(0f, 0f, 0f);
         }
 
-        if (Input.GetMouseButtonDown(0) && cooldownTimer > shootingCooldown && CanShoot())
+        if (Input.GetMouseButtonDown(0))
         {
             Shoot();
         }
 
-        cooldownTimer += Time.deltaTime;
     }
 
     void FixedUpdate() //Executed at a specific rate which can be changed in the Editor
@@ -243,27 +240,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void Shoot()
     {
-        if (currentAmmo > 0)
+        if (currentAmmo > 0 && CanShoot())
         {
-            animator.SetTrigger("Attack");
-            cooldownTimer = 0;
-
-            projectiles[FindProjectile()].transform.position = firePoint.position;
-            projectiles[FindProjectile()].GetComponent<Projectile>().SetDirection(Mathf.Sign(transform.localScale.x));
+            Projectile projectileInstance = Instantiate(Projectile, firePoint.position, Quaternion.identity);
+            Vector3 shootDirection = isFacingRight ? Vector3.right : Vector3.left;
+            projectileInstance.SetDirection(shootDirection);
+            currentAmmo--;
         }
-    }
-
-    private int FindProjectile()
-    {
-        for (int i = 0; i < projectiles.Length; i++)
-        {
-            if (!projectiles[i].activeInHierarchy)
-            {
-                return i;
-            }
-        }
-
-        return 0;
     }
 
     public void AddAmmo()

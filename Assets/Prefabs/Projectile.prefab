@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6246594895824671865}
   - component: {fileID: 5406282858861956501}
   - component: {fileID: 1820491325323507322}
-  - component: {fileID: 8674035585023863013}
   - component: {fileID: 585016794123477771}
   - component: {fileID: 5773159819625266383}
   m_Layer: 0
@@ -20,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6246594895824671865
 Transform:
   m_ObjectHideFlags: 0
@@ -100,29 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 696debba69be1134aa2cb38b26bbcc10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  hit: 0
---- !u!95 &8674035585023863013
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 157211986318202325}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d98217ef8a7d0fd4a9a7918a65191989, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  projectileSpeed: 7.5
 --- !u!61 &585016794123477771
 BoxCollider2D:
   m_ObjectHideFlags: 0

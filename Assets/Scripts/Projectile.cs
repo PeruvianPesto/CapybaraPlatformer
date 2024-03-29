@@ -5,60 +5,21 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] private float speed;
-    private float direction;
-    private float lifetime;
-    public bool hit;
-
-    private BoxCollider2D boxCollider;
-    private Animator animator;
-
-    private void Awake()
-    {
-        animator = GetComponent<Animator>();
-        boxCollider = GetComponent<BoxCollider2D>();
-    }
+    public float projectileSpeed = 4.5f;
+    private Vector3 direction;
 
     private void Update()
     {
-        if (hit) return;
-        float movementSpeed = speed * Time.deltaTime;
-        transform.Translate(movementSpeed, 0, 0);
-
-        lifetime += Time.deltaTime;
-        if (lifetime > 5)
-        {
-            gameObject.SetActive(false);
-        }
+        transform.position += direction * Time.deltaTime * projectileSpeed;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    public void SetDirection(Vector3 dir)
     {
-        hit = true;
-        boxCollider.enabled = false;
-        animator.SetTrigger("Explode");
+        direction = dir.normalized;
     }
 
-    public void SetDirection(float _direction)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        lifetime = 0;
-        direction = _direction;
-        gameObject.SetActive(false);
-        hit = false;
-        boxCollider.enabled = true;
-
-        float localScaleX = transform.localScale.x;
-
-        if (Mathf.Sign(localScaleX) != _direction)
-        {
-            localScaleX = -localScaleX;
-        }
-
-        transform.localScale = new Vector3(localScaleX, transform.localScale.y, transform.localScale.z);
-    }
-
-    public void Deactivated()
-    {
-        gameObject.SetActive(false);    
+        Destroy(this.gameObject);   
     }
 }
