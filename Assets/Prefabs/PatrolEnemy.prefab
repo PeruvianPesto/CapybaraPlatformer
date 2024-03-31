@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1235052183459252008}
   - component: {fileID: 7992240481103590605}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: PatrolEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
